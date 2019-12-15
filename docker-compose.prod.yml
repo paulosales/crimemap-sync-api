@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  database:
+  api:
+    image: crimemap-syn-api
+    build:
+      dockerfile: Dockerfile.prod
+    environment:
+      NODE_ENV: "production"

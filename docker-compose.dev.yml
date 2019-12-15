@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  database:
+  api:
+    image: crimemap-syn-api-dev
+    build:
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: "development"
+      DEBUG: "*"
+    volumes:
+      - ./:/app

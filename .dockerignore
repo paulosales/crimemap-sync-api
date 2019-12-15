@@ -1,0 +1,4 @@
+node_modules
+*.log
+prod.up.sh
+dev.up.sh

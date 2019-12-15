@@ -1,0 +1,29 @@
+version: ~> 1.0
+
+sudo: true
+dist: bionic
+
+language: node_js
+
+branches:
+  only:
+    - master
+    - dev
+
+cache: yarn
+
+jobs:
+  include:
+    - stage: lint
+      node_js: '13'
+      script:
+        - yarn lint
+    - stage: test
+      node_js: '13'
+      sudo: required
+      script:
+        - yarn test
+
+stages:
+  - lint
+  - test
