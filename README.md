@@ -12,7 +12,7 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for crime data 
 
 ## Docker containers
 
-The **crimemap-sync-api** is dockerized, so you can use [docker-compose](https://docs.docker.com/compose/install/) to lauch it inside docker containers. We have docker-compose configuration to development and production environment.
+The **crimemap-sync-api** is dockerized, so you can use [docker-compose](https://docs.docker.com/compose/install/) to lauch it inside docker containers. We have docker-compose configuration to development and production environments.
 
 To launch **development** containers, just run:
 
