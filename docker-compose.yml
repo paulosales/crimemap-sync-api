@@ -1,7 +1,8 @@
-version: "3"
+version: "3.6"
 
 volumes:
-  cm_dados_api:
+  cm_database_files:
+  cm_database_config:
 
 networks:
   cm_network_api:
@@ -15,6 +16,11 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
       - MONGO_INITDB_ROOT_PASSWORD=mongopwd
+      - MONGO_INITDB_DATABASE=crimemapdb
+    volumes:
+      - cm_database_files:/data/db
+      - cm_database_config:/data/configdb
+      - ./scripts/mongo:/docker-entrypoint-initdb.d
     networks:
       - cm_network_api
     expose:
