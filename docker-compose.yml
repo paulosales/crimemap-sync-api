@@ -16,6 +16,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongoadmin
       - MONGO_INITDB_ROOT_PASSWORD=mongopwd
+      - MONGO_INITDB_USERNAME=crimemap
+      - MONGO_INITDB_PASSWORD=crimemappwd
       - MONGO_INITDB_DATABASE=crimemapdb
     volumes:
       - cm_database_files:/data/db
