@@ -1,15 +1,9 @@
-const imports = [
-  {
-    id: 1, startDate: new Date(), status: "RUNNING", logs: [
-      {id: 1, date: new Date(), message: "Downloading pdf..."}
-    ]
-  }
-];
+const { Import } = require('../database/models');
 
 const resolvers = {
   Query: {
-    listImports: () => {
-      return imports;
+    listImports: async () => {
+      return await Import.find().exec();
     }
   },
 
