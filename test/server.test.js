@@ -3,6 +3,7 @@ const { createTestClient } = require('apollo-server-testing');
 const { gql } = require('apollo-server');
 const expect = require('chai').expect;
 const server = require('../src/graphql/server');
+const db = require('../src/database/db');
 
 describe('GraphQL API', () => {
   let client;
@@ -22,6 +23,11 @@ describe('GraphQL API', () => {
         }
       }
     `;
+  });
+
+  after(async () => {
+    await db.disconnect();
+    await server.stop();
   });
 
   it('should return a list of imports', async () => {
