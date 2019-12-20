@@ -16,7 +16,11 @@ const dbName = process.env.DB_NAME;
 
 mongoose.connect(
   `mongodb://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`,
-  { useNewUrlParser: true }
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  }
 );
 
 module.exports = mongoose;
