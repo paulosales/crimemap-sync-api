@@ -27,13 +27,7 @@ describe('GraphQL API', () => {
   it('should return a list of imports', async () => {
     const res = await client.query({ query: LIST_IMPORTS });
     const expected = {
-      listImports: [
-        {
-          id: '1',
-          status: 'RUNNING',
-          logs: [{ id: '1', message: 'Downloading pdf...' }],
-        },
-      ],
+      listImports: [],
     };
     expect(res.data).to.eql(expected);
   });
