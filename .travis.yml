@@ -12,6 +12,16 @@ branches:
 
 cache: yarn
 
+env:
+  - DB_HOST: '127.0.0.1'
+
+services:
+  - mongodb
+
+before_script:
+  - sleep 15
+  - mongo crimemapdb --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb"}]});'
+
 jobs:
   include:
     - stage: lint

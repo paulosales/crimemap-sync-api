@@ -1,13 +1,15 @@
-version: "3"
+version: '3.6'
 
 services:
   database:
+    ports:
+      - '27017:27017'
   api:
     image: crimemap-syn-api-dev
     build:
       dockerfile: Dockerfile.dev
     environment:
-      NODE_ENV: "development"
-      DEBUG: "*"
+      NODE_ENV: 'development'
+      DEBUG: 'crimemap-sync-api'
     volumes:
       - ./:/app
