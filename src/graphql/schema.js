@@ -23,14 +23,22 @@ const typeDefs = gql`
   Import log data type.
   """
   type ImportLog {
-    "Import log ID."
-    id: ID!
-
     "Log entry date time"
     date: Date!
 
     "Log message"
     message: String!
+  }
+
+  """
+  File data
+  """
+  type ImportFile {
+    "File name."
+    name: String!
+
+    "File hash digest."
+    hash: String!
   }
 
   """
@@ -49,6 +57,9 @@ const typeDefs = gql`
     "Import status. The domain values are: RUNNING, FAIL, SUCCESS"
     status: ImportStatus!
 
+    "The imported file."
+    file: ImportFile!
+
     "Logs list."
     logs: [ImportLog]!
   }
@@ -57,8 +68,6 @@ const typeDefs = gql`
   User data type
   """
   type User {
-    "User ID"
-    id: ID!
     "User name that can be used to login into sync server."
     username: String!
 
@@ -85,7 +94,7 @@ const typeDefs = gql`
     import(pdfFile: Upload!): Import!
 
     "Removes imported data from sync server."
-    removeImport(importHash: String!): Import!
+    removeImport(id: ID!): Import!
   }
 `;
 

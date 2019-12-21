@@ -15,8 +15,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint . test --quiet",
-    "test": "mocha --recursive test/",
-    "startdev": "NODE_ENV='development' nodemon start src/index.js",
+    "test": "NODE_ENV='testing' mocha --recursive --colors --exit test/",
+    "startdev": "NODE_ENV='development' nodemon --debug start src/index.js",
     "start": "NODE_ENV='production' pm2-runtime start src/index.js --name crimmap-syn-api"
   },
   "husky": {

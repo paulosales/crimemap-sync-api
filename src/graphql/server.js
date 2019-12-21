@@ -8,8 +8,10 @@
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
+const env = require('../constants/env');
 
-const DEV_MODE = process.env.NODE_ENV === 'development';
+const DEV_MODE = process.env.NODE_ENV === env.DEVELOPMENT;
+const TST_MODE = process.env.NODE_ENV === env.TESTING;
 
 const server = new ApolloServer({
   typeDefs,
@@ -23,7 +25,7 @@ const server = new ApolloServer({
     credentials: true,
   },
   playground: DEV_MODE,
-  debug: DEV_MODE,
+  debug: DEV_MODE || TST_MODE,
 });
 
 module.exports = server;

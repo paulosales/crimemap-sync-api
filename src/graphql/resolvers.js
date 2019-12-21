@@ -5,12 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const debug = require('debug')('crimemap-sync-api');
+const crypto = require('crypto');
 const { Import } = require('../database/models/import');
 
 const resolvers = {
   Query: {
     listImports: async () => {
-      return await Import.find().exec();
+      debug('querying imports');
+      const imports = await Import.find().exec();
+      debug(`found ${imports.length} imports records.`);
+      return imports;
     },
   },
 
@@ -33,19 +38,33 @@ const resolvers = {
       };
     },
 
-    import: async () => {
-      return await Import.create({
-        file: { name: 'teste.pdf', hash: 'e53453453fsdf45' },
+    import: async (_, { pdfFile }) => {
+      debug('importing file...');
+
+      const hash = crypto.createHmac('sha256', pdfFile).digest('hex');
+      const imported = await Import.create({
+        file: { name: 'teste.pdf', hash },
       });
+
+      debug('file imported.');
+
+      return imported;
     },
 
-    removeImport: () => {
-      return {
-        id: 1,
-        startDate: new Date(),
-        status: 'RUNNING',
-        logs: [{ id: 1, date: new Date(), message: 'Processing pdf...' }],
-      };
+    removeImport: async (_, { id }) => {
+      debug(`removing import ${id}.`);
+
+      const importDoc = await Import.findById(id).exec();
+
+      if (!importDoc) {
+        throw new Error(`Import ${id} not found.`);
+      }
+
+      await importDoc.remove();
+
+      debug(`import ${id} removed.`);
+
+      return importDoc;
     },
   },
 };

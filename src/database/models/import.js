@@ -8,9 +8,9 @@
 const { Schema, model } = require('../db');
 
 const importStatusEnum = {
-  RUNNING: 0,
-  SUCCESS: 1,
-  FAIL: 3,
+  RUNNING: 'RUNNING',
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
 };
 
 const importLogSchema = new Schema({
@@ -34,7 +34,7 @@ const importSchema = new Schema({
   },
   finishDate: Date,
   status: {
-    type: Number,
+    type: String,
     required: [true, 'Import status is required.'],
     default: importStatusEnum.RUNNING,
     enum: [

@@ -6,6 +6,8 @@
  */
 
 const mongoose = require('mongoose');
+const debug = require('debug')('crimemap-sync-api');
+
 require('dotenv').config();
 
 const dbUser = process.env.DB_USER;
@@ -14,13 +16,18 @@ const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
 const dbName = process.env.DB_NAME;
 
-mongoose.connect(
-  `mongodb://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`,
-  {
+const MONGO_CONNECTION_STRING = `mongodb://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`;
+
+debug(`connecting to ${MONGO_CONNECTION_STRING}`);
+
+mongoose
+  .connect(MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
-  }
-);
+  })
+  .then(() => {
+    debug('connection to mongodb was succeed.');
+  });
 
 module.exports = mongoose;
