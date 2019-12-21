@@ -4,11 +4,11 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for crime data 
 
 ## Tech stack
 
-* [Apollo Server](https://github.com/apollographql/apollo-server)
-* [Docker](https://www.docker.com/)
-* [MochaJs](https://mochajs.org/)
-* [PM2](https://pm2.keymetrics.io/)
-* [Nodemon](https://nodemon.io/)
+- [Apollo Server](https://github.com/apollographql/apollo-server)
+- [Docker](https://www.docker.com/)
+- [MochaJs](https://mochajs.org/)
+- [PM2](https://pm2.keymetrics.io/)
+- [Nodemon](https://nodemon.io/)
 
 ## Docker containers
 
@@ -42,4 +42,4 @@ Removing database ... done
 
 ## License
 
-**crime-sync-api** is [MIT Licensed](https://github.com/paulosales/crimemap-sync-api/blob/master/LICENSE)
+[MIT](https://github.com/paulosales/crimemap-sync-api/blob/master/LICENSE) © [paulosales](https://github.com/paulosales/).
