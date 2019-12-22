@@ -4,6 +4,10 @@ sudo: true
 dist: bionic
 
 language: node_js
+node_js:
+  - 13
+  - 12
+  - 11
 
 branches:
   only:
@@ -13,7 +17,12 @@ branches:
 cache: yarn
 
 env:
-  - DB_HOST=127.0.0.1 DB_PORT=27017 DB_NAME=crimemapdb DB_USER=crimemap DB_PASS=crimemappwd
+  - NODE_ENV=testing DB_HOST=127.0.0.1 DB_PORT=27017 DB_NAME=crimemapdb DB_USER=crimemap DB_PASS=crimemappwd CODECOV_TOKEN=f9cb9c77-dcc3-447e-902e-8d997b65911c
+
+install:
+  - yarn install
+  - yarn global add codecov
+  - yarn global add nyc
 
 services:
   - mongodb
@@ -22,18 +31,8 @@ before_script:
   - sleep 15
   - mongo crimemapdb --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb"}]});'
 
-jobs:
-  include:
-    - stage: lint
-      node_js: '13'
-      script:
-        - yarn lint
-    - stage: test
-      node_js: '13'
-      sudo: required
-      script:
-        - yarn test
-
-stages:
-  - lint
-  - test
+script:
+  - yarn lint
+  - yarn test
+  - nyc --reporter=lcov ./node_modules/mocha/bin/_mocha  --exit
+  - codecov
