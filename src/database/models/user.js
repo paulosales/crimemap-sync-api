@@ -5,6 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
+const debug = require('debug')('crimemap-sync-api');
+const crypto = require('crypto');
 const { Schema, model } = require('../db');
 
 const userSchema = new Schema({
@@ -32,6 +36,54 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'Password is required.'],
   },
+});
+
+userSchema.static('login', async function(username, password) {
+  const LOGIN_FAIL_MSG = 'Username or password is invalid!';
+
+  debug(`querying for user ${username}.`);
+  const user = await this.findOne({ username }).exec();
+  debug(`user ${user} found.`);
+
+  if (!user) {
+    return {
+      success: false,
+      message: LOGIN_FAIL_MSG,
+    };
+  }
+
+  debug('checking password.');
+  if (await argon2.verify(user.password, password + user.passwordSalt)) {
+    //Creating jwt token
+    const payload = {
+      iss: 'crimemap-auth',
+      sub: user.id,
+      iat: Math.floor(Date.now() / 1000),
+      name: `${user.firstName} ${user.lastName}`,
+      roles: [],
+      permissions: [],
+    };
+    const token = jwt.sign(payload, process.env.JWT_KEY);
+    debug(`password valid token ${token} generated for user ${username}.`);
+
+    //Every successfull login, we change the password salt and the password hash.
+    const newSalt = crypto.randomBytes(16).toString('base64');
+    const newPassword = await argon2.hash(password + newSalt);
+    user.passwordSalt = newSalt;
+    user.password = newPassword;
+    await user.save();
+
+    return {
+      success: true,
+      token,
+    };
+  } else {
+    debug(`invalid password for user ${username}.`);
+    return {
+      success: false,
+      message: LOGIN_FAIL_MSG,
+    };
+  }
 });
 
 const User = model('User', userSchema);

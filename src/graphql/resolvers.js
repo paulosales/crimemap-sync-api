@@ -8,6 +8,7 @@
 const debug = require('debug')('crimemap-sync-api');
 const crypto = require('crypto');
 const { Import } = require('../database/models/import');
+const { User } = require('../database/models/user');
 
 const resolvers = {
   Query: {
@@ -20,30 +21,27 @@ const resolvers = {
   },
 
   Mutation: {
-    login: () => {
-      return {
-        id: 1,
-        username: 'paulosales',
-        email: 'paulosales@gmail.com',
-        fullname: 'Paulo Rogério Sales Santos',
-      };
+    login: async (_, { username, password }) => {
+      debug(`${username} is loggin-in`);
+      const auth = await User.login(username, password);
+      debug(`${username} auth ${JSON.stringify(auth)}`);
+      return auth;
     },
 
-    logout: () => {
-      return {
-        id: 1,
-        username: 'paulosales',
-        email: 'paulosales@gmail.com',
-        fullname: 'Paulo Rogério Sales Santos',
-      };
-    },
-
-    import: async (_, { pdfFile }) => {
+    import: async (_, { pdfUrl }) => {
       debug('importing file...');
 
-      const hash = crypto.createHmac('sha256', pdfFile).digest('hex');
+      const hash = crypto.createHmac('sha256', pdfUrl).digest('hex');
       const imported = await Import.create({
-        file: { name: 'teste.pdf', hash },
+        author: {
+          username: 'paulosales',
+          firstName: 'Paulo',
+          lastName: 'Santos',
+        },
+        file: {
+          name: 'teste.pdf',
+          hash,
+        },
       });
 
       debug('file imported.');
