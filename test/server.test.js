@@ -4,12 +4,14 @@ const expect = require('chai').expect;
 const server = require('../src/graphql/server');
 const queries = require('./queries');
 const mutations = require('./mutations');
+const setupTestData = require('./setupTestData');
 
 describe('CrimeSync GraphQL API', () => {
   let client;
 
-  before(() => {
+  before(async () => {
     client = createTestClient(server);
+    await setupTestData();
   });
 
   it('should return a list of imports', async () => {
@@ -50,7 +52,7 @@ describe('CrimeSync GraphQL API', () => {
     const res = await client.mutate({
       mutation: mutations.LOGIN,
       variables: {
-        username: 'paulosales',
+        username: 'johndoe',
         password: 'abc',
       },
     });

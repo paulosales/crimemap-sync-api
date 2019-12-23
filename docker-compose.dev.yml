@@ -2,6 +2,8 @@ version: '3.6'
 
 services:
   database:
+    environment:
+      - MONGO_INITDB_TEST_DATABASE=crimemapdb_test
     ports:
       - '27017:27017'
   api:

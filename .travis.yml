@@ -17,7 +17,7 @@ branches:
 cache: yarn
 
 env:
-  - NODE_ENV=testing DB_HOST=127.0.0.1 DB_PORT=27017 DB_NAME=crimemapdb DB_USER=crimemap DB_PASS=crimemappwd CODECOV_TOKEN=f9cb9c77-dcc3-447e-902e-8d997b65911c JWT_KEY=secret
+  - NODE_ENV=testing DB_HOST=127.0.0.1 DB_PORT=27017 DB_NAME=crimemapdb_test DB_USER=crimemap DB_PASS=crimemappwd CODECOV_TOKEN=f9cb9c77-dcc3-447e-902e-8d997b65911c JWT_KEY=secret
 
 install:
   - yarn install
@@ -29,7 +29,7 @@ services:
 
 before_script:
   - sleep 15
-  - mongo crimemapdb --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb"}]});'
+  - mongo crimemapdb --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb_test"}]});'
 
 script:
   - yarn lint
