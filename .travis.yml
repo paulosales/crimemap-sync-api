@@ -29,7 +29,7 @@ services:
 
 before_script:
   - sleep 15
-  - mongo crimemapdb --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb_test"}]});'
+  - mongo crimemapdb_test --eval 'db.createUser({user:"crimemap",pwd:"crimemappwd",roles:[{role:"dbOwner", db:"crimemapdb_test"}]});'
 
 script:
   - yarn lint
