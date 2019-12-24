@@ -43,6 +43,20 @@ const importSchema = new Schema({
       importStatusEnum.FAIL,
     ],
   },
+  author: {
+    username: {
+      type: String,
+      required: [true, 'Author username is required.'],
+    },
+    firstName: {
+      type: String,
+      required: [true, 'Author first name is required.'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Author last name is required.'],
+    },
+  },
   file: {
     name: {
       type: String,

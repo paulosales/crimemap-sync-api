@@ -42,6 +42,15 @@ const typeDefs = gql`
   }
 
   """
+  Author data type
+  """
+  type Author {
+    username: String!
+    firstName: String!
+    lastName: String!
+  }
+
+  """
   Import data type.
   """
   type Import {
@@ -56,6 +65,9 @@ const typeDefs = gql`
 
     "Import status. The domain values are: RUNNING, FAIL, SUCCESS"
     status: ImportStatus!
+
+    "Import author"
+    author: Author!
 
     "The imported file."
     file: ImportFile!
@@ -78,6 +90,19 @@ const typeDefs = gql`
     fullname: String!
   }
 
+  """
+  Auth data type. Used to return auth data at authentication methods.
+  """
+  type Auth {
+    "It indicates the authentication operation was successfuly or not"
+    success: Boolean!
+    "Authentication operation message. If the authentication fails, this message will be set."
+    message: String
+
+    "The authorization token. If the authentication was succeed, this token will be set."
+    token: String
+  }
+
   type Query {
     "List the imports performed into sync server."
     listImports(top: Int = 10, all: Boolean = false): [Import]!
@@ -85,13 +110,10 @@ const typeDefs = gql`
 
   type Mutation {
     "Log-in to sync server."
-    login(username: String!, password: String!): User!
-
-    "Log-out from sync server."
-    logout(username: String!): User!
+    login(username: String!, password: String!): Auth!
 
     "Runs a import into sync server."
-    import(pdfFile: Upload!): Import!
+    import(pdfUrl: String!): Import!
 
     "Removes imported data from sync server."
     removeImport(id: ID!): Import!
