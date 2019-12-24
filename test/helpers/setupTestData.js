@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const { User } = require('../src/database/models/user');
+const { User } = require('../../src/database/models/user');
 const debug = require('debug')('crimemap-sync-api-test');
 
 module.exports = async function setupTestData() {
