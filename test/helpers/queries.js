@@ -22,6 +22,15 @@ const LIST_IMPORTS = gql`
   }
 `;
 
+const INFO = gql`
+  query {
+    info {
+      name
+    }
+  }
+`;
+
 module.exports = {
   LIST_IMPORTS,
+  INFO,
 };

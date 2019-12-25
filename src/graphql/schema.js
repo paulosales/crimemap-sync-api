@@ -103,9 +103,23 @@ const typeDefs = gql`
     token: String
   }
 
+  """
+  API info data type
+  """
+  type Info {
+    name: String!
+    version: String!
+    author: String!
+    license: String!
+    homepage: String!
+  }
+
   type Query {
     "List the imports performed into sync server."
     listImports(top: Int = 10, all: Boolean = false): [Import]!
+
+    "Retrieve the API information"
+    info: Info!
   }
 
   type Mutation {

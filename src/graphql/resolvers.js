@@ -18,6 +18,20 @@ const resolvers = {
       debug(`found ${imports.length} imports records.`);
       return imports;
     },
+
+    info: async () => {
+      debug('querying info');
+      const packageJson = require('../../package.json');
+      const infoData = {
+        name: packageJson.name,
+        version: packageJson.version,
+        auth: packageJson.auth,
+        license: packageJson.license,
+        homepage: packageJson.homepage,
+      };
+      debug('info data sended');
+      return infoData;
+    },
   },
 
   Mutation: {
