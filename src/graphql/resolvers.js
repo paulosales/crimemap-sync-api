@@ -12,9 +12,13 @@ const { User } = require('../database/models/user');
 
 const resolvers = {
   Query: {
-    listImports: async () => {
+    listImports: async (_, { top }) => {
       debug('querying imports');
-      const imports = await Import.find().exec();
+      let importsQuery = Import.find().sort({ startDate: 'desc' });
+      if (top !== 0) {
+        importsQuery = importsQuery.limit(top);
+      }
+      const imports = await importsQuery.exec();
       debug(`found ${imports.length} imports records.`);
       return imports;
     },

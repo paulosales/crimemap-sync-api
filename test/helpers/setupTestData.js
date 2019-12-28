@@ -9,7 +9,7 @@ const { User } = require('../../src/database/models/user');
 const debug = require('debug')('crimemap-sync-api-test');
 
 module.exports = async function setupTestData() {
-  debug('query=ing users');
+  debug('querying users');
   const users = await User.find({}).exec();
   debug(`${users.length} found. removing all.`);
   users.forEach(async user => {

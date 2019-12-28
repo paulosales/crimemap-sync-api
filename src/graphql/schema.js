@@ -115,8 +115,8 @@ const typeDefs = gql`
   }
 
   type Query {
-    "List the imports performed into sync server."
-    listImports(top: Int = 10, all: Boolean = false): [Import]!
+    "List the top n-most recents imports performed into sync server. I you don't inform top parameter, It'll bring all imports."
+    listImports(top: Int = 0): [Import]!
 
     "Retrieve the API information"
     info: Info!
