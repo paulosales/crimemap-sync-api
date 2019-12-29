@@ -7,6 +7,7 @@
 
 const debug = require('debug')('crimemap-sync-api');
 const crypto = require('crypto');
+const { UserInputError } = require('apollo-server');
 const { Import } = require('../database/models/import');
 const { User } = require('../database/models/user');
 
@@ -50,6 +51,20 @@ const resolvers = {
       debug('importing file...');
 
       const hash = crypto.createHmac('sha256', pdfUrl).digest('hex');
+      debug('calculated file hash: %s', hash);
+
+      const dbImported = await Import.findOne({ 'file.hash': hash }).exec();
+      if (dbImported) {
+        debug(
+          'The file %s is already imported with id %s.',
+          pdfUrl,
+          dbImported.id
+        );
+        throw new UserInputError(
+          `The file ${pdfUrl} is already imported with the ID '${dbImported.id}'.`
+        );
+      }
+
       const imported = await Import.create({
         author: {
           username: 'paulosales',
@@ -61,8 +76,7 @@ const resolvers = {
           hash,
         },
       });
-
-      debug('file imported.');
+      debug("file imported with id '%s'.", imported.id);
 
       return imported;
     },
@@ -71,16 +85,17 @@ const resolvers = {
       debug(`removing import ${id}.`);
 
       const importDoc = await Import.findById(id).exec();
-
       if (!importDoc) {
-        throw new Error(`Import ${id} not found.`);
+        debug(`Import ${id} not found.`);
+        throw new UserInputError(`Import '${id}' not found.`, {
+          invalidArgs: ['id'],
+        });
       }
 
-      await importDoc.remove();
-
+      const removed = await importDoc.remove();
       debug(`import ${id} removed.`);
 
-      return importDoc;
+      return removed;
     },
   },
 };
