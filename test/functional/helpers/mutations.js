@@ -15,10 +15,19 @@ const IMPORT_FILE = gql`
   }
 `;
 
+const IMPORT_FILE_WITH_ID = gql`
+  mutation($pdfUrl: String!) {
+    import(pdfUrl: $pdfUrl) {
+      id
+      status
+    }
+  }
+`;
+
 const REMOVE_IMPORT = gql`
   mutation($id: ID!) {
     removeImport(id: $id) {
-      status
+      id
     }
   }
 `;
@@ -36,5 +45,6 @@ const LOGIN = gql`
 module.exports = {
   REMOVE_IMPORT,
   IMPORT_FILE,
+  IMPORT_FILE_WITH_ID,
   LOGIN,
 };

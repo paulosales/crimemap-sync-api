@@ -9,7 +9,7 @@
 
 const { createTestClient } = require('apollo-server-testing');
 const expect = require('chai').expect;
-const server = require('../src/graphql/server');
+const server = require('../../src/graphql/server');
 const queries = require('./helpers/queries');
 
 describe('#info service', () => {
