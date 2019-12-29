@@ -8,9 +8,8 @@
 const { gql } = require('apollo-server');
 
 const LIST_IMPORTS = gql`
-  query QueryListImports {
-    listImports {
-      id
+  query QueryListImports($top: Int) {
+    listImports(top: $top) {
       status
       file {
         hash
@@ -22,6 +21,24 @@ const LIST_IMPORTS = gql`
   }
 `;
 
+const LIST_IMPORTS_IDS = gql`
+  query QueryListImports {
+    listImports {
+      id
+    }
+  }
+`;
+
+const INFO = gql`
+  query {
+    info {
+      name
+    }
+  }
+`;
+
 module.exports = {
   LIST_IMPORTS,
+  LIST_IMPORTS_IDS,
+  INFO,
 };

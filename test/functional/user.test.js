@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 const { createTestClient } = require('apollo-server-testing');
 const expect = require('chai').expect;
-const server = require('../src/graphql/server');
+const server = require('../../src/graphql/server');
 const mutations = require('./helpers/mutations');
 const setupTestData = require('./helpers/setupTestData');
 
