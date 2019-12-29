@@ -61,7 +61,7 @@ describe('CrimeSync GraphQL Import API', () => {
         variables: { id: '6dd8540e077db37ca5839696' },
       });
 
-      const expected = 'Import 6dd8540e077db37ca5839696 not found.';
+      const expected = "Import '6dd8540e077db37ca5839696' not found.";
       expect(res.errors[0].message).to.be.equal(expected);
     });
   });
