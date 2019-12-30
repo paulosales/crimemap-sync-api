@@ -1,4 +1,4 @@
-version: "3.6"
+version: '3.6'
 
 volumes:
   cm_database_files:
@@ -26,16 +26,14 @@ services:
     networks:
       - cm_network_api
     expose:
-      - "27017"
+      - '27017'
   api:
-    build:
-      context: ./
     container_name: api
-    links: 
+    links:
       - database
     depends_on:
       - database
     networks:
       - cm_network_api
     ports:
-      - "4000:4000"
+      - '4000:4000'
