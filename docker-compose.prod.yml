@@ -1,10 +1,8 @@
-version: "3.6"
+version: '3.6'
 
 services:
   database:
   api:
-    image: crimemap-syn-api
-    build:
-      dockerfile: Dockerfile.prod
+    image: prsales/crimemap-sync-api:latest
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: 'production'

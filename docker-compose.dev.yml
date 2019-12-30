@@ -10,6 +10,7 @@ services:
     image: crimemap-syn-api-dev
     build:
       dockerfile: Dockerfile.dev
+      context: ./
     environment:
       NODE_ENV: 'development'
       DEBUG: 'crimemap-sync-api'
