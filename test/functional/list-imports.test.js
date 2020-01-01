@@ -2,11 +2,11 @@
 const { createTestClient } = require('apollo-server-testing');
 const expect = require('chai').expect;
 const server = require('../../src/graphql/server');
-const mutations = require('./helpers/mutations');
+const queries = require('./helpers/queries');
 const setupTestData = require('./helpers/setupTestData');
 const login = require('./helpers/login');
 
-describe('[functional] Import API', () => {
+describe('[functional] List Imports API', () => {
   let client;
   let originalContext;
 
@@ -39,36 +39,54 @@ describe('[functional] Import API', () => {
       server.context = originalContext;
     });
 
-    context('import a pdf file', () => {
-      it('should upload a file successfully.', async () => {
-        const pdfUrl = 'http://www.sources.com/file.pdf';
-        const res = await client.mutate({
-          mutation: mutations.IMPORT_FILE,
-          variables: { pdfUrl: pdfUrl },
-        });
-        const expected = { import: { status: 'RUNNING' } };
+    context('list imports with no parameters', () => {
+      it('should return a list of imports', async () => {
+        const res = await client.query({ query: queries.LIST_IMPORTS });
+        const expected = {
+          listImports: [
+            {
+              file: {
+                hash:
+                  'fdbec63e92aa80ce1c7a58434226f7a4e47c420cf39972b086ee3cd62b59ffe3',
+              },
+              logs: [],
+              status: 'RUNNING',
+            },
+            {
+              file: {
+                hash:
+                  'fdbec63e92aa80ce1c7a58434226f7a4e47c420cf39972b086ee3cd62b59ffef',
+              },
+              logs: [],
+              status: 'SUCCESS',
+            },
+          ],
+        };
         expect(res.data).to.eql(expected);
       });
     });
 
-    context('import the same pdf twice', () => {
-      it('should fail at the second upload.', async () => {
-        const pdfUrl = 'http://www.sources.com/file1.pdf';
-        const res1 = await client.mutate({
-          mutation: mutations.IMPORT_FILE_WITH_ID,
-          variables: { pdfUrl },
+    context('list imports with top 1 option', () => {
+      it('should return a list with one import', async () => {
+        const res = await client.query({
+          query: queries.LIST_IMPORTS,
+          variables: {
+            top: 1,
+          },
         });
-
-        const res2 = await client.mutate({
-          mutation: mutations.IMPORT_FILE,
-          variables: { pdfUrl },
-        });
-
-        expect(res2.errors).not.to.be.undefined;
-        expect(res2.errors).have.lengthOf(1);
-        expect(res2.errors[0].message).to.be.equals(
-          `The file http://www.sources.com/file1.pdf is already imported with the ID '${res1.data.import.id}'.`
-        );
+        const expected = {
+          listImports: [
+            {
+              file: {
+                hash:
+                  'fdbec63e92aa80ce1c7a58434226f7a4e47c420cf39972b086ee3cd62b59ffe3',
+              },
+              logs: [],
+              status: 'RUNNING',
+            },
+          ],
+        };
+        expect(res.data).to.eql(expected);
       });
     });
   });
@@ -100,10 +118,11 @@ describe('[functional] Import API', () => {
     });
 
     it('should throw a authentication error', async () => {
-      const pdfUrl = 'http://www.sources.com/file.pdf';
-      const res = await client.mutate({
-        mutation: mutations.IMPORT_FILE,
-        variables: { pdfUrl: pdfUrl },
+      const res = await client.query({
+        query: queries.LIST_IMPORTS,
+        variables: {
+          top: 1,
+        },
       });
 
       expect(res.errors).to.have.lengthOf(1);

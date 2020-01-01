@@ -23,6 +23,8 @@ module.exports = async function setupTestData() {
     firstName: 'john',
     lastName: 'doe',
     email: 'john@damain.com',
+    roles: ['admin'],
+    permissions: ['import', 'remove-import', 'list-imports', 'info'],
     passwordSalt: 'AGcpm3I5CuDhsZYd9pq/',
     password:
       '$argon2i$v=19$m=4096,t=3,p=1$7i3TC17v/jWx9kF8ZQzbTg$xf4pF4cXyDo3jWH8kg+ncYlb442SK5JtvMZ0erkssAc',
