@@ -5,12 +5,33 @@ const server = require('../../src/graphql/server');
 const mutations = require('./helpers/mutations');
 const setupTestData = require('./helpers/setupTestData');
 
-describe('CrimeSync User GraphQL API', () => {
+describe('[fuctional] User API', () => {
   let client;
+  let originalContext;
 
   before(async () => {
+    // FIXME: Apollo server workaround.
+    /*
+     * This is a workaround for apollo server issue https://github.com/apollographql/apollo-server/issues/2277
+     * The issue solution is schedulled in milestone 3.x: https://github.com/apollographql/apollo-server/milestone/16
+     * When the definitive solution is realeased, the below line can be removed.
+     */
+    const integrationContext = {
+      req: {
+        headers: {
+          authorization: '',
+        },
+      },
+    };
+    originalContext = server.context;
+    server.context = () => originalContext(integrationContext);
+
     client = createTestClient(server);
     await setupTestData();
+  });
+
+  after(() => {
+    server.context = originalContext;
   });
 
   context('login with a valid username and password', () => {

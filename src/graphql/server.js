@@ -6,6 +6,8 @@
  */
 
 const { ApolloServer } = require('apollo-server');
+const jwt = require('jsonwebtoken');
+const debug = require('debug').debug('crimemap-sync-api');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const env = require('../constants/env');
@@ -16,6 +18,20 @@ const TST_MODE = process.env.NODE_ENV === env.TESTING;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: integrationContext => {
+    debug('RUNNING context');
+    const headers = integrationContext.req.headers;
+    const authToken = headers.authorization.substr(7);
+    debug('Receiving the auth token %s.', authToken);
+    let user = null;
+    try {
+      user = jwt.verify(authToken, process.env.JWT_KEY);
+      debug('The token is valid.');
+    } catch (e) {
+      debug('The token is not valid');
+    }
+    return { user };
+  },
   subscriptions: {
     path: '/subscriptions',
   },

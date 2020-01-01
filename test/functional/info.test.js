@@ -12,11 +12,31 @@ const expect = require('chai').expect;
 const server = require('../../src/graphql/server');
 const queries = require('./helpers/queries');
 
-describe('#info service', () => {
+describe('[functional] Info API', () => {
   let client;
+  let originalContext;
 
   before(() => {
+    // FIXME: Apollo server workaround.
+    /*
+     * This is a workaround for apollo server issue https://github.com/apollographql/apollo-server/issues/2277
+     * The issue solution is schedulled in milestone 3.x: https://github.com/apollographql/apollo-server/milestone/16
+     * When the definitive solution is realeased, the below line can be removed.
+     */
+    const integrationContext = {
+      req: {
+        headers: {
+          authorization: ``,
+        },
+      },
+    };
+    originalContext = server.context;
+    server.context = () => originalContext(integrationContext);
     client = createTestClient(server);
+  });
+
+  after(() => {
+    server.context = originalContext;
   });
 
   context('call for api name', () => {

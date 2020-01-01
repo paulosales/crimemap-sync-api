@@ -7,10 +7,15 @@
 
 const debug = require('debug')('crimemap-sync-api');
 const crypto = require('crypto');
-const { UserInputError } = require('apollo-server');
+const { UserInputError, AuthenticationError } = require('apollo-server');
 const { Import } = require('../../database/models/import');
 
-module.exports = async (_, { pdfUrl }) => {
+module.exports = async (_, { pdfUrl }, context) => {
+  if (!context.user) {
+    throw new AuthenticationError(
+      'You are not authorized to access this service. You have to login first.'
+    );
+  }
   debug('importing file...');
 
   const hash = crypto.createHmac('sha256', pdfUrl).digest('hex');

@@ -28,6 +28,12 @@ const userSchema = new Schema({
     type: String,
     required: [true, 'User e-mail is required'],
   },
+  roles: {
+    type: [String],
+  },
+  permissions: {
+    type: [String],
+  },
   passwordSalt: {
     type: String,
     required: [true, 'User password salt is required'],
@@ -60,8 +66,8 @@ userSchema.static('login', async function(username, password) {
       sub: user.id,
       iat: Math.floor(Date.now() / 1000),
       name: `${user.firstName} ${user.lastName}`,
-      roles: [],
-      permissions: [],
+      roles: user.roles ? user.roles : [],
+      permissions: user.permissions ? user.permissions : [],
     };
     const token = jwt.sign(payload, process.env.JWT_KEY);
     debug(`password valid token ${token} generated for user ${username}.`);
