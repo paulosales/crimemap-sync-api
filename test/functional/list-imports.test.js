@@ -131,4 +131,48 @@ describe('[functional] List Imports API', () => {
       );
     });
   });
+
+  context('with a authenticated user and no permissions', () => {
+    before(async () => {
+      await setupTestData();
+      originalContext = server.context;
+
+      const authData = await login('foobar', 'abc');
+
+      // FIXME: Apollo server workaround.
+      /*
+       * This is a workaround for apollo server issue https://github.com/apollographql/apollo-server/issues/2277
+       * The issue solution is schedulled in milestone 3.x: https://github.com/apollographql/apollo-server/milestone/16
+       * When the definitive solution is realeased, the below line can be removed.
+       */
+      const integrationContext = {
+        req: {
+          headers: {
+            authorization: `Bearer ${authData.token}`,
+          },
+        },
+      };
+      server.context = () => originalContext(integrationContext);
+
+      client = createTestClient(server);
+    });
+
+    after(async () => {
+      server.context = originalContext;
+    });
+
+    it('should fail to list-imports', async () => {
+      const res = await client.query({
+        query: queries.LIST_IMPORTS,
+        variables: {
+          top: 1,
+        },
+      });
+
+      expect(res.errors).to.have.lengthOf(1);
+      expect(res.errors[0].message).to.be.equals(
+        "The user 'foo bar' do not have permission to list imports."
+      );
+    });
+  });
 });
