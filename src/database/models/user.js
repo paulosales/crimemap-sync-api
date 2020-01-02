@@ -66,8 +66,8 @@ userSchema.static('login', async function(username, password) {
       sub: user.id,
       iat: Math.floor(Date.now() / 1000),
       name: `${user.firstName} ${user.lastName}`,
-      roles: user.roles ? user.roles : [],
-      permissions: user.permissions ? user.permissions : [],
+      roles: user.roles,
+      permissions: user.permissions,
     };
     const token = jwt.sign(payload, process.env.JWT_KEY);
     debug(`password valid token ${token} generated for user ${username}.`);

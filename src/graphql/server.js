@@ -21,7 +21,9 @@ const server = new ApolloServer({
   context: integrationContext => {
     debug('RUNNING context');
     const headers = integrationContext.req.headers;
-    const authToken = headers.authorization.substr(7);
+    const authToken = headers.authorization
+      ? headers.authorization.substr(7)
+      : '';
     debug('Receiving the auth token %s.', authToken);
     let user = null;
     try {

@@ -30,6 +30,17 @@ module.exports = async function setupTestData() {
       '$argon2i$v=19$m=4096,t=3,p=1$7i3TC17v/jWx9kF8ZQzbTg$xf4pF4cXyDo3jWH8kg+ncYlb442SK5JtvMZ0erkssAc',
   });
 
+  debug('creating user foobar.');
+  await User.create({
+    username: 'foobar',
+    firstName: 'foo',
+    lastName: 'bar',
+    email: 'foo@damain.com',
+    passwordSalt: 'AGcpm3I5CuDhsZYd9pq/',
+    password:
+      '$argon2i$v=19$m=4096,t=3,p=1$7i3TC17v/jWx9kF8ZQzbTg$xf4pF4cXyDo3jWH8kg+ncYlb442SK5JtvMZ0erkssAc',
+  });
+
   debug('querying imports.');
   const imports = await Import.find({}).exec();
   debug('%d imports found. removing all', imports.length);

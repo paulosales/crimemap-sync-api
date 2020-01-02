@@ -6,15 +6,27 @@
  */
 
 const debug = require('debug')('crimemap-sync-api');
-const { AuthenticationError } = require('apollo-server');
+const { AuthenticationError, ForbiddenError } = require('apollo-server');
 const { Import } = require('../../database/models/import');
 
 module.exports = async (_, { top }, context) => {
-  if (!context.user) {
+  const { user } = context;
+
+  if (!user) {
     throw new AuthenticationError(
       'You are not authorized to access this service. You have to login first.'
     );
   }
+
+  if (
+    user.roles.indexOf('admin') === -1 &&
+    user.permissions.indexOf('list-imports') === -1
+  ) {
+    throw new ForbiddenError(
+      `The user '${user.name}' do not have permission to list imports.`
+    );
+  }
+
   debug('querying imports');
   let importsQuery = Import.find().sort({ startDate: 'desc' });
   if (top !== 0) {
