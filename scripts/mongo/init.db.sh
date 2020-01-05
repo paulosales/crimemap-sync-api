@@ -1,10 +1,10 @@
-mongo -- "$MONGO_INITDB_DATABASE" <<EOF
+mongo -- "crimemapdb" <<EOF
   const rootUser = '$MONGO_INITDB_ROOT_USERNAME';
   const rootPassword = '$MONGO_INITDB_ROOT_PASSWORD';
-  const user = '$MONGO_INITDB_USERNAME';
-  const passwd = '$MONGO_INITDB_PASSWORD';
-  const database = '$MONGO_INITDB_DATABASE';
-  const testDatabase = '$MONGO_INITDB_TEST_DATABASE';
+  const user = 'crimemap';
+  const passwd = 'crimemappwd';
+  const database = 'crimemapdb';
+  const testDatabase = 'crimemapdb_test';
 
   const roles = [
     {role: 'dbOwner', db: database}
