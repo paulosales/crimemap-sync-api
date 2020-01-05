@@ -14,11 +14,8 @@ services:
     container_name: database
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-      - MONGO_INITDB_ROOT_PASSWORD=mongopwd
-      - MONGO_INITDB_USERNAME=crimemap
-      - MONGO_INITDB_PASSWORD=crimemappwd
-      - MONGO_INITDB_DATABASE=crimemapdb
+      MONGO_INITDB_ROOT_USERNAME: 'mongoadmin'
+      MONGO_INITDB_ROOT_PASSWORD: 'mongopwd'
     volumes:
       - cm_database_files:/data/db
       - cm_database_config:/data/configdb
@@ -29,6 +26,15 @@ services:
       - '27017'
   api:
     container_name: api
+    environment:
+      CORS_CLIENT_ORIGIN: '*'
+      DB_HOST: 'database'
+      DB_PORT: 27017
+      DB_NAME: 'crimemapdb'
+      DB_USER: 'crimemap'
+      DB_PASS: 'crimemappwd'
+      SYNC_API_ADMIN_USER: 'johndoe'
+      SYNC_API_ADMIN_PASSWORD: 'abc'
     links:
       - database
     depends_on:
