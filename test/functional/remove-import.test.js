@@ -42,7 +42,9 @@ describe('[functional] Remove Import API', () => {
 
     context('remove a existing import', () => {
       it('should remove a import successfuly', async () => {
-        const res = await client.query({ query: queries.LIST_IMPORTS_IDS });
+        const res = await client.query({
+          query: queries.LIST_IMPORTS_IDS,
+        });
         const imports = res.data.listImports;
 
         for (let i = 0; i < imports.length; i++) {
