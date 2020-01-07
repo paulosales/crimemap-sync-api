@@ -38,7 +38,7 @@ if [[ ! -f "$DOCKER_COMPOSE" ]]; then
 fi
 
 echo ""
-echo "We download a functional 'docker-compose.yml' sample file and a database initializer script 'init.db.sh'."
-echo "You can customize these files and run the api application with:"
+echo "We downloaded a functional 'docker-compose.yml' sample file and a database initializer script 'init.db.sh'."
+echo "You can customize ot not these files and run the api application with:"
 echo ""
 echo "docker-compose up -d"

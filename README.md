@@ -14,84 +14,16 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for importing c
 
 The **crimemap-sync-api** is dockerized, so you need to have [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed in your machine to raise the API server.
 
-Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a **docker-compose.yml** file. Here is a sample that you can use to raise the **crimemap-sync-api**:
-
-```yaml
-version: '3.6'
-
-volumes:
-  database_files:
-  database_config:
-
-networks:
-  network_api:
-    driver: bridge
-
-services:
-  database:
-    image: mongo:4.2
-    container_name: database
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: 'mongoadmin'
-      MONGO_INITDB_ROOT_PASSWORD: 'mongopwd'
-    volumes:
-      - database_files:/data/db
-      - database_config:/data/configdb
-      - ./initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-    networks:
-      - network_api
-    expose:
-      - '27017'
-  api:
-    image: prsales/crimemap-sync-api
-    container_name: api
-    environment:
-      NODE_ENV: 'production'
-      DEBUG: ''
-      JWT_KEY: 'a_secret_key'
-      CORS_CLIENT_ORIGIN: '*'
-      DB_HOST: 'database'
-      DB_PORT: 27017
-      DB_NAME: 'crimemapdb'
-      DB_USER: 'crimemap'
-      DB_PASS: 'crimemappwd'
-      SYNC_API_ADMIN_USER: 'johndoe'
-      SYNC_API_ADMIN_PASSWORD: 'abc'
-    links:
-      - database
-    depends_on:
-      - database
-    networks:
-      - network_api
-    ports:
-      - '4000:4000'
-```
-
-To know more how to configure the mongo database container, take a look [here](https://hub.docker.com/_/mongo).
-To initialize the database with a initial user and password, we sugest a bash script like the script below:
+Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a **docker-compose.yml** file and create a shell script to initialize the database.
+To make it more simple, you can run the following command and it'll download a **docker-compose.yml** and a **init.db.sh** samples files.
 
 ```bash
-mongo -- "crimemapdb" <<EOF
-  const rootUser = '$MONGO_INITDB_ROOT_USERNAME';
-  const rootPassword = '$MONGO_INITDB_ROOT_PASSWORD';
-  const user = 'crimemap';
-  const passwd = 'crimemappwd';
-  const database = 'crimemapdb';
-  const testDatabase = 'crimemapdb_test';
+$ wget -O - https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/setup-container.sh | bash
+...
+We downloaded a functional 'docker-compose.yml' sample file and a database initializer script 'init.db.sh'.
+You can customize or not these files and run the api application with:
 
-  const roles = [
-    {role: 'dbOwner', db: database}
-  ]
-
-  const admindb = db.getSiblingDB('admin');
-  admindb.auth(rootUser, rootPassword);
-
-  db.createUser({
-    user: user, pwd: passwd,
-    roles
-  });
-EOF
+docker-compose up -d
 ```
 
 Now, in the same directory of **docker-compose.yml** file type:
@@ -107,7 +39,7 @@ Creating api      ... done
 
 ## Configuration
 
-The **crimemap-sync-api** application is distributed as a docker image, so the configuration can be made by setting some environment variables. Here we have the environment variables that you can use:
+In the **docker-compose.yml** you can configure the **crimemap-sync-api** just setting some environment variables. Here we have the environment variables that you can use:
 
 - **NODE_ENV**
 
