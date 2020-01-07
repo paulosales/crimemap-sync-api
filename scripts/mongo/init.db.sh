@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mongo -- "crimemapdb" <<EOF
   const rootUser = '$MONGO_INITDB_ROOT_USERNAME';
   const rootPassword = '$MONGO_INITDB_ROOT_PASSWORD';

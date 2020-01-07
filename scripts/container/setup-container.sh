@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 echo "Checking if docker is installed...";
 docker -v >> /dev/null 2>&1
