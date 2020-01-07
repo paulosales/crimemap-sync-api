@@ -19,7 +19,7 @@ services:
     volumes:
       - database_files:/data/db
       - database_config:/data/configdb
-      - ./scripts/mongo:/docker-entrypoint-initdb.d
+      - ./init.db.sh:/docker-entrypoint-initdb.d/init.db.sh
     networks:
       - network_api
     expose:
@@ -27,10 +27,7 @@ services:
     ports:
       - '27017:27017'
   api:
-    image: crimemap-sync-api-dev
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./
+    image: prsales/crimemap-sync-api
     container_name: api
     environment:
       NODE_ENV: 'development'
@@ -43,8 +40,6 @@ services:
       DB_PASS: 'crimemappwd'
       SYNC_API_ADMIN_USER: 'johndoe'
       SYNC_API_ADMIN_PASSWORD: 'abc'
-    volumes:
-      - ./:/app
     links:
       - database
     depends_on:

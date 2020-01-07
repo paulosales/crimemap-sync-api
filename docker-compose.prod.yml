@@ -1,8 +1,0 @@
-version: '3.6'
-
-services:
-  database:
-  api:
-    image: prsales/crimemap-sync-api:latest
-    environment:
-      NODE_ENV: 'production'
