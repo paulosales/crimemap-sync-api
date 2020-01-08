@@ -14,19 +14,7 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for importing c
 
 The **crimemap-sync-api** is dockerized, so you need to have [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed in your machine to raise the API server.
 
-Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a **docker-compose.yml** file and create a shell script to initialize the database.
-To make it more simple, you can run the following command and it'll download a **docker-compose.yml** and a **init.db.sh** samples files.
-
-```bash
-$ wget -O - https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/setup-container.sh | bash
-...
-We downloaded a functional 'docker-compose.yml' sample file and a database initializer script 'init.db.sh'.
-You can customize or not these files and run the api application with:
-
-docker-compose up -d
-```
-
-Now, in the same directory of **docker-compose.yml** file type:
+Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a docker-compose.yml file and create a shell script to initialize the database. Fortunately we create samples of this files to you just download and customize and use it. So, download these files [docker-compose.yml](https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/docker-compose.yml) and [init.db.sh](https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/init.db.sh) to same directory and run the command below inside this directory:
 
 ```bash
 $ docker-compose up -d
@@ -55,27 +43,27 @@ In the **docker-compose.yml** you can configure the **crimemap-sync-api** just s
 
 - **CORS_CLIENT_ORIGIN**
 
-  Here you can set the domain name the can access this API. Use a **\*** (asterisk) to grant access to all domains. To know more about [Cross-origin resource sharing (CORS)](https://pt.wikipedia.org/wiki/Cross-origin_resource_sharing), 👈 click here.
+  Here you can set the domain name the can access this API. Use a **\*** (asterisk) to grant access to all domains. Click in the next link to know more about [cross-origin resource sharing (CORS)](https://pt.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 - **DB_HOST**
 
-  The hostname of the mongo database server.
+  The hostname of the database server.
 
 - **DB_PORT**
 
-  The mongo database port. The mongo database default port is **27017**.
+  The database port. The mongo database default port is **27017**.
 
 - **DB_NAME**
 
-  The database name where the **crimemap-sync-api** will storage the collections.
+  The database name where the api application will storage data.
 
 - **DB_USER**
 
-  The database username.
+  The database username that you created in the database initialization script.
 
 - **DB_PASS**
 
-  The database password.
+  The database password that you created in the database initialization script.
 
 ## License
 
