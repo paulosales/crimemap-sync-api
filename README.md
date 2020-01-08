@@ -14,87 +14,7 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for importing c
 
 The **crimemap-sync-api** is dockerized, so you need to have [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed in your machine to raise the API server.
 
-Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a **docker-compose.yml** file. Here is a sample that you can use to raise the **crimemap-sync-api**:
-
-```yaml
-version: '3.6'
-
-volumes:
-  database_files:
-  database_config:
-
-networks:
-  network_api:
-    driver: bridge
-
-services:
-  database:
-    image: mongo:4.2
-    container_name: database
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: 'mongoadmin'
-      MONGO_INITDB_ROOT_PASSWORD: 'mongopwd'
-    volumes:
-      - database_files:/data/db
-      - database_config:/data/configdb
-      - ./initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-    networks:
-      - network_api
-    expose:
-      - '27017'
-  api:
-    image: prsales/crimemap-sync-api
-    container_name: api
-    environment:
-      NODE_ENV: 'production'
-      DEBUG: ''
-      JWT_KEY: 'a_secret_key'
-      CORS_CLIENT_ORIGIN: '*'
-      DB_HOST: 'database'
-      DB_PORT: 27017
-      DB_NAME: 'crimemapdb'
-      DB_USER: 'crimemap'
-      DB_PASS: 'crimemappwd'
-      SYNC_API_ADMIN_USER: 'johndoe'
-      SYNC_API_ADMIN_PASSWORD: 'abc'
-    links:
-      - database
-    depends_on:
-      - database
-    networks:
-      - network_api
-    ports:
-      - '4000:4000'
-```
-
-To know more how to configure the mongo database container, take a look [here](https://hub.docker.com/_/mongo).
-To initialize the database with a initial user and password, we sugest a bash script like the script below:
-
-```bash
-mongo -- "crimemapdb" <<EOF
-  const rootUser = '$MONGO_INITDB_ROOT_USERNAME';
-  const rootPassword = '$MONGO_INITDB_ROOT_PASSWORD';
-  const user = 'crimemap';
-  const passwd = 'crimemappwd';
-  const database = 'crimemapdb';
-  const testDatabase = 'crimemapdb_test';
-
-  const roles = [
-    {role: 'dbOwner', db: database}
-  ]
-
-  const admindb = db.getSiblingDB('admin');
-  admindb.auth(rootUser, rootPassword);
-
-  db.createUser({
-    user: user, pwd: passwd,
-    roles
-  });
-EOF
-```
-
-Now, in the same directory of **docker-compose.yml** file type:
+Once you have docker and docker-compose installed, now you need to declare the server infrastructure inside a docker-compose.yml file and create a shell script to initialize the database. Fortunately we create samples of this files to you just download and customize and use it. So, download these files [docker-compose.yml](https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/docker-compose.yml) and [init.db.sh](https://raw.githubusercontent.com/paulosales/crimemap-sync-api/master/scripts/container/init.db.sh) to same directory and run the command below inside this directory:
 
 ```bash
 $ docker-compose up -d
@@ -107,7 +27,7 @@ Creating api      ... done
 
 ## Configuration
 
-The **crimemap-sync-api** application is distributed as a docker image, so the configuration can be made by setting some environment variables. Here we have the environment variables that you can use:
+In the **docker-compose.yml** you can configure the **crimemap-sync-api** just setting some environment variables. Here we have the environment variables that you can use:
 
 - **NODE_ENV**
 
@@ -123,27 +43,27 @@ The **crimemap-sync-api** application is distributed as a docker image, so the c
 
 - **CORS_CLIENT_ORIGIN**
 
-  Here you can set the domain name the can access this API. Use a **\*** (asterisk) to grant access to all domains. To know more about [Cross-origin resource sharing (CORS)](https://pt.wikipedia.org/wiki/Cross-origin_resource_sharing), 👈 click here.
+  Here you can set the domain name the can access this API. Use a **\*** (asterisk) to grant access to all domains. Click in the next link to know more about [cross-origin resource sharing (CORS)](https://pt.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 - **DB_HOST**
 
-  The hostname of the mongo database server.
+  The hostname of the database server.
 
 - **DB_PORT**
 
-  The mongo database port. The mongo database default port is **27017**.
+  The database port. The mongo database default port is **27017**.
 
 - **DB_NAME**
 
-  The database name where the **crimemap-sync-api** will storage the collections.
+  The database name where the api application will storage data.
 
 - **DB_USER**
 
-  The database username.
+  The database username that you created in the database initialization script.
 
 - **DB_PASS**
 
-  The database password.
+  The database password that you created in the database initialization script.
 
 ## License
 
