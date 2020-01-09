@@ -15,6 +15,9 @@ const env = require('../constants/env');
 const DEV_MODE = process.env.NODE_ENV === env.DEVELOPMENT;
 const TST_MODE = process.env.NODE_ENV === env.TESTING;
 
+debug('DEV MODE = %b', DEV_MODE);
+debug('TEST MODE = %b', TST_MODE);
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,

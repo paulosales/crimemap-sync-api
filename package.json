@@ -16,8 +16,8 @@
   "scripts": {
     "lint": "eslint . test --quiet",
     "test": "cross-env DB_NAME='crimemapdb_test' DB_HOST='127.0.0.1' NODE_ENV='testing' nyc --reporter=lcov mocha --recursive --colors --exit test/",
-    "startdev": "cross-env NODE_ENV='development' nodemon start src/index.js",
-    "start": "cross-env NODE_ENV='production' pm2-runtime start src/index.js --name crimmap-syn-api"
+    "startdev": "nodemon start src/index.js",
+    "start": "pm2-runtime start src/index.js --name crimmap-syn-api"
   },
   "husky": {
     "hooks": {
