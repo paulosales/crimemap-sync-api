@@ -13,7 +13,7 @@ module.exports = async () => {
   const infoData = {
     name: packageJson.name,
     version: packageJson.version,
-    auth: packageJson.auth,
+    author: packageJson.author,
     license: packageJson.license,
     homepage: packageJson.homepage,
   };

@@ -1,14 +1,16 @@
 # crimemap-sync-api &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/paulosales/crimemap-sync-api/blob/master/LICENSE) [![Build Status](https://travis-ci.com/paulosales/crimemap-sync-api.svg?branch=master)](https://travis-ci.com/paulosales/crimemap-sync-api) [![codecov](https://codecov.io/gh/paulosales/crimemap-sync-api/branch/master/graph/badge.svg)](https://codecov.io/gh/paulosales/crimemap-sync-api) [![code factor](https://img.shields.io/codefactor/grade/github/paulosales/crimemap-sync-api/master)](https://www.codefactor.io/repository/github/paulosales/crimemap-sync-api) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paulosales_crimemap-sync-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=paulosales_crimemap-sync-api)
 
-The **crimemap-sync-api** is a GraphQL API that exposes services for importing crime data to a crime map database. Use **[crimemap-sync-cli](https://github.com/paulosales/crimemap-sync-cli)** to consumes these services.
+The **crimemap-sync-api** is a GraphQL API that exposes services for importing crime data to a crime map database. Use **[crimemap-sync-cli](https://github.com/paulosales/crimemap-sync-cli)** to consumes these services. Here is a usage examplo of the API:
 
-## Tech stack
+![Preview](images/sync-api.gif)
 
-- [Apollo Server](https://github.com/apollographql/apollo-server)
-- [Docker](https://www.docker.com/)
-- [MochaJs](https://mochajs.org/)
-- [PM2](https://pm2.keymetrics.io/)
-- [Nodemon](https://nodemon.io/)
+## Table of contents
+
+[1. Installation](#installation)
+[2. Configurarion](#configuration)
+[3. Documentation](#documentation)
+[4. Tech stack](#tech-stack)
+[5. License](#license)
 
 ## Installation
 
@@ -64,6 +66,19 @@ In the **docker-compose.yml** you can configure the **crimemap-sync-api** just s
 - **DB_PASS**
 
   The database password that you created in the database initialization script.
+
+## Documentation
+
+It's a GraphQL API, so we have [queries and mutations](https://graphql.org/learn/queries/) to call the API.
+You can see the API documention on the API server playground. To see it, just run da API server in development mode and access the server from a webrowser, i.e., follow the [installation](#installation) procedure and type http://localhost:4000/ in your webrowser.
+
+## Tech stack
+
+- [Apollo Server](https://github.com/apollographql/apollo-server)
+- [Docker](https://www.docker.com/)
+- [MochaJs](https://mochajs.org/)
+- [PM2](https://pm2.keymetrics.io/)
+- [Nodemon](https://nodemon.io/)
 
 ## License
 
