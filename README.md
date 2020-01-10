@@ -69,8 +69,7 @@ In the **docker-compose.yml** you can configure the **crimemap-sync-api** just s
 
 ## Documentation
 
-It's a GraphQL API, so we have [queries and mutations](https://graphql.org/learn/queries/) to call the API.
-You can see the API documention on the API server playground. To see it, just run da API server in development mode and access the server from a webrowser, i.e., follow the [installation](#installation) procedure and type http://localhost:4000/ in your webrowser.
+You can read the documentantion [here](./DOCUMENTATION.md) or you can check it on the API server playground. To see it, just run da API server in development mode and access the server from a webrowser, i.e., follow the [installation](#installation) procedure and type http://localhost:4000/ in your webrowser.
 
 ## Tech stack
 
