@@ -6,11 +6,11 @@ The **crimemap-sync-api** is a GraphQL API that exposes services for importing c
 
 ## Table of contents
 
-[1. Installation](#installation)
-[2. Configurarion](#configuration)
-[3. Documentation](#documentation)
-[4. Tech stack](#tech-stack)
-[5. License](#license)
+- [1. Installation](#installation)
+- [2. Configurarion](#configuration)
+- [3. Documentation](#documentation)
+- [4. Tech stack](#tech-stack)
+- [5. License](#license)
 
 ## Installation
 
