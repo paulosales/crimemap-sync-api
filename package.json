@@ -32,7 +32,7 @@
     "@commitlint/config-conventional": "^8.3.4",
     "apollo-server-testing": "^2.9.13",
     "chai": "^4.2.0",
-    "codecov": "^3.6.1",
+    "codecov": "^3.6.5",
     "commitizen": "^4.0.3",
     "cross-env": "^6.0.3",
     "cz-conventional-changelog": "3.0.2",
